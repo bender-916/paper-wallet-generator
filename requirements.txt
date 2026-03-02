@@ -1,0 +1,25 @@
+# Paper Wallet Offline Generator - Dependencies
+# Todas las librerías son offline
+
+# BIP39 Mnemonics
+mnemonic>=0.20
+
+# BIP32/BIP44 HD Wallet derivation
+bip32>=3.6
+
+# Ethereum support
+eth-account>=0.11.0
+coincurve>=20.0.0
+
+# Bitcoin support
+bit>=0.8.0
+
+# QR Code generation
+qrcode[pil]>=7.4.2
+Pillow>=10.0.0
+
+# PDF generation (opcional)
+reportlab>=4.0.0
+
+# Base58 encoding
+base58>=2.1.0

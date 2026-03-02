@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Wallet - {{COIN}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .wallet-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .wallet-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+        }
+        
+        .wallet-header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .wallet-header .coin-name {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .section {
+            padding: 30px;
+            border-bottom: 2px dashed #e0e0e0;
+        }
+        
+        .section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-label {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        
+        .section.share .section-label {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .section.secret .section-label {
+            background: #f44336;
+            color: white;
+        }
+        
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            border: 4px solid #333;
+            border-radius: 10px;
+            padding: 10px;
+            background: white;
+        }
+        
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .info-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            width: 100%;
+            word-break: break-all;
+        }
+        
+        .info-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .info-value {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .warning-box h3 {
+            color: #856404;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .warning-box p {
+            color: #856404;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .mnemonic-section {
+            background: #e8f5e9;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .mnemonic-section .info-label {
+            color: #2e7d32;
+        }
+        
+        .mnemonic-words {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #1b5e20;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        .wallet-footer {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            text-align: center;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .cut-line {
+            text-align: center;
+            padding: 10px;
+            background: repeating-linear-gradient(
+                45deg,
+                #f8f9fa,
+                #f8f9fa 10px,
+                #e0e0e0 10px,
+                #e0e0e0 20px
+            );
+        }
+        
+        .cut-line-text {
+            background: white;
+            padding: 5px 15px;
+            font-size: 12px;
+            color: #666;
+            border-radius: 15px;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            
+            .wallet-container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            
+            .warning-box {
+                page-break-inside: avoid;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wallet-container">
+        <div class="wallet-header">
+            <h1>🔐 Paper Wallet</h1>
+            <div class="coin-name">{{COIN}}</div>
+        </div>
+        
+        <!-- SHARE Section -->
+        <div class="section share">
+            <span class="section-label">✓ SHARE - Public Address</span>
+            <div class="qr-container">
+                <div class="qr-code">
+                    <img src="{{ADDRESS_QR}}" alt="Address QR Code">
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Public Address</div>
+                    <div class="info-value">{{ADDRESS}}</div>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h3>📤 Share This Address</h3>
+                <p>This is your public address. You can safely share it with others to receive funds. Anyone can send {{COIN}} to this address.</p>
+            </div>
+        </div>
+        
+        <!-- Cut Line -->
+        <div class="cut-line">
+            <span class="cut-line-text">✂ FOLD / CUT HERE ✂</span>
+        </div>
+        
+        <!-- SECRET Section -->
+        <div class="section secret">
+            <span class="section-label">🔒 SECRET - Private Key</span>
+            <div class="qr-container">
+                <div class="qr-code">
+                    <img src="{{PRIVATE_KEY_QR}}" alt="Private Key QR Code">
+                </div>
+                <div class="info-box">
+                    <div class="info-label">Private Key</div>
+                    <div class="info-value">{{PRIVATE_KEY}}</div>
+                </div>
+            </div>
+            <div class="warning-box" style="background: #ffebee; border-color: #f44336;">
+                <h3 style="color: #c62828;">⚠️ KEEP SECRET - DO NOT SHARE</h3>
+                <p style="color: #c62828;">This private key gives complete access to your funds. Never share it with anyone. Store it in a safe, offline location. If someone gets this key, they can steal all your funds.</p>
+            </div>
+            
+            <!-- Mnemonic (if provided) -->
+            {% if MNEMONIC %}
+            <div class="mnemonic-section">
+                <div class="info-label">🔑 Recovery Phrase (Mnemonic)</div>
+                <div class="mnemonic-words">
