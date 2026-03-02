@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+""" 
 Paper Wallet Generator CLI
 Genera paper wallets offline para Bitcoin y Ethereum
 """
@@ -18,7 +18,6 @@ from crypto_utils import (
     validate_cryptocurrency
 )
 
-
 def parse_arguments():
     """Parsea los argumentos de línea de comandos"""
     parser = argparse.ArgumentParser(
@@ -26,44 +25,33 @@ def parse_arguments():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog='''
 Examples:
-  # Generate Bitcoin testnet wallet
-  python generate.py --coin btc --output my_btc_wallet.html --testnet
-  
-  # Generate Ethereum mainnet wallet with mnemonic backup
-  python generate.py --coin eth --output my_eth_wallet.html --show-mnemonic
-  
-  # Generate Bitcoin mainnet wallet
-  python generate.py --coin btc --output btc_wallet.html
+    # Generate Bitcoin testnet wallet
+    python generate.py --coin btc --output my_btc_wallet.html --testnet
+    
+    # Generate Ethereum mainnet wallet with mnemonic backup
+    python generate.py --coin eth --output my_eth_wallet.html --show-mnemonic
+    
+    # Generate Bitcoin mainnet wallet
+    python generate.py --coin btc --output btc_wallet.html
         '''
     )
-    
     parser.add_argument(
-        '--coin',
-        required=True,
-        choices=['btc', 'eth', 'bitcoin', 'ethereum'],
+        '--coin', required=True, choices=['btc', 'eth', 'bitcoin', 'ethereum'],
         help='Cryptocurrency type (btc/bitcoin or eth/ethereum)'
     )
-    
     parser.add_argument(
-        '--output',
-        required=True,
+        '--output', required=True,
         help='Output file path for the generated HTML wallet'
     )
-    
     parser.add_argument(
-        '--testnet',
-        action='store_true',
+        '--testnet', action='store_true',
         help='Use testnet instead of mainnet (for testing only)'
     )
-    
     parser.add_argument(
-        '--show-mnemonic',
-        action='store_true',
+        '--show-mnemonic', action='store_true',
         help='Include mnemonic phrase in the wallet and save to separate .txt file'
     )
-    
     return parser.parse_args()
-
 
 def load_template(template_path=None):
     """Carga el template HTML"""
@@ -71,14 +59,11 @@ def load_template(template_path=None):
         # Usar template por defecto en el mismo directorio
         script_dir = os.path.dirname(os.path.abspath(__file__))
         template_path = os.path.join(script_dir, 'wallet_template.html')
-    
     with open(template_path, 'r', encoding='utf-8') as f:
         return f.read()
 
-
 def generate_wallet(coin, output_path, testnet=False, show_mnemonic=False):
-    """
-    Genera una paper wallet completa
+    """ Genera una paper wallet completa
     
     Args:
         coin: 'btc' o 'eth'
@@ -96,7 +81,6 @@ def generate_wallet(coin, output_path, testnet=False, show_mnemonic=False):
     # Step 2: Derivar claves según la moneda
     print("   🔑 Deriving keys...")
     coin_lower = coin.lower().strip()
-    
     if coin_lower in ['btc', 'bitcoin']:
         keys = derive_btc_keys(mnemonic, passphrase="", testnet=testnet)
         coin_name = 'Bitcoin' if not testnet else 'Bitcoin Testnet'
@@ -137,10 +121,10 @@ def generate_wallet(coin, output_path, testnet=False, show_mnemonic=False):
         # Escapar el mnemonic para HTML
         mnemonic_escaped = mnemonic.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
         mnemonic_html = f'''
-            <div class="mnemonic-section">
-                <div class="info-label">🔑 Recovery Phrase (Mnemonic)</div>
-                <div class="mnemonic-words">{mnemonic_escaped}</div>
-            </div>'''
+    <div class="mnemonic-section">
+        <div class="info-label">🔑 Recovery Phrase (Mnemonic)</div>
+        <div class="mnemonic-words">{mnemonic_escaped}</div>
+    </div>'''
         template_data['MNEMONIC'] = mnemonic_html
     else:
         template_data['MNEMONIC'] = '<!-- Mnemonic not included for security -->'
@@ -184,7 +168,6 @@ def generate_wallet(coin, output_path, testnet=False, show_mnemonic=False):
     
     return True
 
-
 def main():
     """Función principal"""
     try:
@@ -221,3 +204,7 @@ def main():
         return 1
     except FileNotFoundError as e:
         print(f"\n❌ Error: Template file not found - {e}", file=sys.stderr)
+        return 1
+
+if __name__ == '__main__':
+    sys.exit(main())
