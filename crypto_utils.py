@@ -4,6 +4,7 @@ Sin conexión a internet, usando solo librerías locales
 """
 
 import os
+import base64
 import base58
 import hashlib
 import qrcode
