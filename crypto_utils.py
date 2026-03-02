@@ -72,9 +72,9 @@ def derive_btc_keys(mnemonic, passphrase="", testnet=False):
     coin_type = 1 if testnet else 0
     derivation_path = f"m/44'/{coin_type}'/0'/0/0"
     
-    # Deriva las claves
-    xprv = bip32.get_xpriv_from_path(derivation_path)
-    private_bytes = bytes.fromhex(xprv.hex())
+    # Deriva las claves - obtener la clave privada directamente
+    private_key_bytes = bip32.get_privkey_from_path(derivation_path)
+    private_key_hex = private_key_bytes.hex()
     
     # Usar `bit` para generar la dirección (offline)
     if testnet:
@@ -82,7 +82,7 @@ def derive_btc_keys(mnemonic, passphrase="", testnet=False):
     else:
         from bit import PrivateKey as KeyClass
     
-    key = KeyClass.from_hex(private_bytes.hex())
+    key = KeyClass.from_hex(private_key_hex)
     
     return {
         'private_key_hex': key.to_hex(),
